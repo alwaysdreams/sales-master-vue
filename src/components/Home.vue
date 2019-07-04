@@ -8,7 +8,7 @@
           :src="ad.imageSrc"
         >
           <div class="car-link">
-            <v-btn class="error" :to="'/ad/' + ad.id">{{ ad.title }}</v-btn>
+            <v-btn color="indigo" :to="'/ad/' + ad.id">{{ ad.title }}</v-btn>
           </div>
         </v-carousel-item>
       </v-carousel>
@@ -36,9 +36,9 @@
             </v-card-title>
 
             <v-card-actions>
-              <v-btn flat :to="'/ad/' + ad.id" class="error">OPEN</v-btn>
+              <v-btn raised :to="'/ad/' + ad.id" color="cyan" dark>OPEN</v-btn>
               <v-spacer></v-spacer>
-              <v-btn raised class="primary">BUY IT</v-btn>
+              <v-btn raised dark color="indigo">BUY IT</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
