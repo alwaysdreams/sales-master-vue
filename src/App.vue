@@ -26,7 +26,11 @@
         class="hidden-md-and-up"
         @click="drawer = !drawer"
       ></v-toolbar-side-icon>
-      <v-toolbar-title>Sales MASTER</v-toolbar-title>
+      <v-toolbar-title>
+        <router-link to="/" tag="span" class="pointer">
+          Sales MASTER
+        </router-link>
+      </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
         <v-btn 
@@ -60,3 +64,10 @@ export default {
   })
 }
 </script>
+
+<style scoped>
+  .pointer {
+    cursor: pointer;
+  }
+</style>
+

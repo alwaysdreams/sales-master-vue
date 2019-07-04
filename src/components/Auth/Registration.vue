@@ -9,7 +9,7 @@
           <v-card-text>
             <v-form v-model="valid" ref="form" validation>
               <v-text-field 
-                prepend-icon="person"
+                prepend-icon="face"
                 name="name" 
                 label="Name" 
                 type="text"
