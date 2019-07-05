@@ -13,40 +13,14 @@ class Ad {
 
 export default {
   state: {
-    ads: [
-      { 
-        title: 'First', 
-        description: 'First description', 
-        promo: false, 
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg', 
-        id: 1 
-      },
-      { 
-        title: 'Second', 
-        description: 'Second description', 
-        promo: false, 
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg', 
-        id: 2 
-      },
-      { 
-        title: 'Third', 
-        description: 'Third description', 
-        promo: true, 
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg', 
-        id: 3 
-      },
-      { 
-        title: 'Fourth', 
-        description: 'Fourth description', 
-        promo: true, 
-        imageSrc: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg', 
-        id: 4
-      }
-    ]
+    ads: []
   },
   mutations: {
     createAd (state, payload) {
       state.ads.push(payload)
+    },
+    loadAds (state, payload) {
+      state.ads = payload
     }
   },
   actions: {
@@ -66,6 +40,29 @@ export default {
       } catch (error) {
         commit('setLoading', false)
         commit('setError', error.message)
+        throw error
+      }
+    },
+    async fetchAds ({commit}) {
+      commit('clearError')
+      commit('setLoading', true)
+
+      try {
+        const dbResponse = await firebase.database().ref('ads').once('value')
+        const dbCollection = dbResponse.val()
+        let ads = []
+
+        Object.keys(dbCollection).forEach(key => {
+          const item = dbCollection[key]
+          const {title, description, ownerId, imageSrc, promo} = item
+          ads.push(new Ad(title, description, ownerId, imageSrc, promo, key))
+        })
+
+        commit('loadAds', ads)
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setError', error.message)
+        commit('setLoading', false)
         throw error
       }
     }
