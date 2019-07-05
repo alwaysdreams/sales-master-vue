@@ -58,6 +58,7 @@
               color="indigo darken-3"
               dark
               @click="createAd"
+              :loading="loading"
             >Create</v-btn>
           </v-flex>
         </v-layout>
@@ -77,6 +78,11 @@ export default {
       promo: false
     }
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     createAd () {
       if (!this.$refs.form.validate()) {
@@ -90,7 +96,10 @@ export default {
       }
 
       this.$store.dispatch('createAd', adData)
-      this.$router.push('/')
+        .then(() => {
+          this.$router.push('/list')
+        })
+        .catch(() => {})
     }
   }
 }

@@ -68,8 +68,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$route.query['loginError'])
-    
     if (this.$route.query['loginError']) {
       this.$store.dispatch('setError', `You must login/register for continue`)
     }

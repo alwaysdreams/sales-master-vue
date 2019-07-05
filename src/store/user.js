@@ -21,7 +21,8 @@ export default {
       commit('setUser', null)
     },
     autoLoginUser ({commit}, payload) {
-      commit('setUser', payload)
+      const {uid} = payload
+      commit('setUser', new User(uid))
     },
     async registerUser ({commit}, {email, password}) {
       commit('clearError')
@@ -37,10 +38,10 @@ export default {
         throw error
       }
     },
-    async loginUser ({commit}, {email, password}) {
+    async loginUser ({commit}, payload) {
       commit('clearError')
       commit('setLoading', true)
-
+      const {email, password} = payload
       try {
         const user = await firebase.auth().signInWithEmailAndPassword(email, password)
         commit('setLoading', false)
