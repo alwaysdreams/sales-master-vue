@@ -84,9 +84,12 @@ export default {
       const adData = {
         title: this.title, 
         description: this.description,
-        promo: false
+        promo: this.promo,
+        imageSrc: "https://previews.123rf.com/images/carmendorin/carmendorin1310/carmendorin131000058/22749158-grunge-rubber-stamp-with-text-new-item-vector-illustration.jpg"
       }
-      console.log(adData)
+
+      this.$store.dispatch('createAd', adData)
+      this.$router.push('/')
     }
   }
 }

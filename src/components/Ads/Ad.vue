@@ -4,12 +4,12 @@
       <v-flex xs12>
         <v-card>
           <v-img
-            src="https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg"
-            height="400px"
+            :src="ad.imageSrc"
+            height="500px"
           ></v-img>
           <v-card-text>
-            <h1 class="text--primary">Lorem</h1>
-            <p>Descirption is will be here, when u will write description to this ad</p>
+            <h1 class="text--primary">{{ ad.title }}</h1>
+            <p>{{ ad.description }}</p>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -25,8 +25,11 @@
 
 <script>
 export default {
-  data () {
-    return {} 
+  props: ['id'],
+  computed: {
+    ad () {
+      return this.$store.getters.adById(this.id)
+    }
   }
 }
 </script>
