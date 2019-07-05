@@ -44,9 +44,27 @@
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
+
     <v-content>
       <router-view></router-view>
     </v-content>
+
+    <template v-if="error">
+      <v-snackbar 
+        multi-line
+        color="error"
+        :timout="3000"
+        :value="true"
+      >
+        {{ error }}
+        <v-btn
+          flat
+          @click="closeError"
+          @input="closeError"
+        >Close</v-btn>
+      </v-snackbar>
+    </template>
+
   </v-app>
 </template>
 
@@ -54,6 +72,7 @@
 export default {
   data () {
     return {
+      // snackbar: false,
       drawer: false,
       links: [
         { title: 'Login', icon: 'lock', url: '/login' },
@@ -62,6 +81,16 @@ export default {
         { title: 'New ad', icon: 'note_add', url: '/new' },
         { title: 'My ad', icon: 'list', url: '/list' }
       ]
+    }
+  },
+  computed: {
+    error () {
+      return this.$store.getters.error
+    }
+  },
+  methods: {
+    closeError () {
+      this.$store.dispatch('clearError')
     }
   }
 }
