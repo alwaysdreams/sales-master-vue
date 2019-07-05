@@ -21,6 +21,7 @@
             type="text"
             v-model="description"
             multi-line
+            :rules="[v => !!v || 'Description is required']"
           ></v-textarea>
         </v-form>
 

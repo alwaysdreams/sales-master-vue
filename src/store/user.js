@@ -16,6 +16,12 @@ export default {
     }
   },
   actions: {
+    logout ({commit}) {
+      commit('setUser', null)
+    },
+    autoLoginUser ({commit}, payload) {
+      commit('setUser', payload)
+    },
     async registerUser ({commit}, {email, password}) {
       commit('clearError')
       commit('setLoading', true)
@@ -48,6 +54,9 @@ export default {
   getters: {
     user (state) {
       return state.user
+    },
+    isUserLogin (state) {
+      return state.user != null
     }
   }
 }

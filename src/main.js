@@ -23,6 +23,12 @@ new Vue({
       storageBucket: "",
       messagingSenderId: "477549987047",
       appId: "1:477549987047:web:829a8ab239cbc0c1"
-    });
+    })
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.$store.dispatch('autoLoginUser', user)
+      }
+    })
   }
 }).$mount('#app')

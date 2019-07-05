@@ -42,6 +42,14 @@
           <v-icon left>{{ link.icon }}</v-icon>
           {{ link.title }}
         </v-btn>
+        <v-btn 
+          flat
+          @click="logout"
+          v-show="isUserLogin"
+        >
+          <v-icon left>block</v-icon>
+          logout
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -72,25 +80,33 @@
 export default {
   data () {
     return {
-      // snackbar: false,
-      drawer: false,
-      links: [
-        { title: 'Login', icon: 'lock', url: '/login' },
-        { title: 'Registration', icon: 'face', url: '/registration' },
-        { title: 'Orders', icon: 'bookmark_border', url: '/orders' },
-        { title: 'New ad', icon: 'note_add', url: '/new' },
-        { title: 'My ad', icon: 'list', url: '/list' }
-      ]
+      drawer: false
     }
   },
   computed: {
     error () {
       return this.$store.getters.error
+    },
+    isUserLogin () {
+      return this.$store.getters.isUserLogin
+    },
+    links () {
+      return this.isUserLogin ? [
+        { title: 'New ad', icon: 'note_add', url: '/new' },
+        { title: 'Orders', icon: 'bookmark_border', url: '/orders' },
+        { title: 'My ad', icon: 'list', url: '/list' }
+      ] : [
+        { title: 'Login', icon: 'lock', url: '/login' },
+        { title: 'Registration', icon: 'face', url: '/registration' }
+      ]
     }
   },
   methods: {
     closeError () {
       this.$store.dispatch('clearError')
+    },
+    logout () {
+      this.$store.dispatch('logout')
     }
   }
 }
