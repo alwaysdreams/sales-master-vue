@@ -17,6 +17,7 @@ export default {
   },
   actions: {
     logout ({commit}) {
+      firebase.auth().signOut()
       commit('setUser', null)
     },
     autoLoginUser ({commit}, payload) {

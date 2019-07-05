@@ -67,6 +67,13 @@ export default {
       return this.$store.getters.loading
     }
   },
+  mounted () {
+    console.log(this.$route.query['loginError'])
+    
+    if (this.$route.query['loginError']) {
+      this.$store.dispatch('setError', `You must login/register for continue`)
+    }
+  },
   methods: {
     onSubmit () {
       if (!this.$refs.form.validate()) {
