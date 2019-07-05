@@ -24,7 +24,7 @@
           ></v-textarea>
         </v-form>
 
-        <v-layout>
+        <v-layout row>
           <v-flex xs12>
             <v-btn color="cyan" dark>
               Upload
@@ -33,13 +33,13 @@
           </v-flex>
         </v-layout>
 
-        <v-layout>
+        <v-layout row>
           <v-flex xs12>
             <img src="" height="150">
           </v-flex>
         </v-layout>
 
-        <v-layout>
+        <v-layout row>
           <v-flex xs12>
             <v-switch
               color="indigo"
@@ -49,7 +49,7 @@
           </v-flex>
         </v-layout>
         
-        <v-layout>
+        <v-layout row>
           <v-flex xs12>
             <v-spacer></v-spacer>
             <v-btn
@@ -57,7 +57,7 @@
               color="indigo darken-3"
               dark
               @click="createAd"
-            >Save</v-btn>
+            >Create</v-btn>
           </v-flex>
         </v-layout>
 
