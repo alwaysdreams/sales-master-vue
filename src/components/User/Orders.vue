@@ -10,9 +10,10 @@
             :key="order.id"
           >
             <v-list-tile-action>
-              <v-checkbox
+              <v-checkbox 
                 v-model="order.done"
                 @change="markDone(order)"
+                :disabled="order.done"
                 color="cyan"
               ></v-checkbox>
             </v-list-tile-action>

@@ -52,16 +52,18 @@
 
 <script>
 export default {
-  data: () => ({
-    drawer: false,
-    links: [
-      { title: 'Login', icon: 'lock', url: '/login' },
-      { title: 'Registration', icon: 'face', url: '/registration' },
-      { title: 'Orders', icon: 'bookmark_border', url: '/orders' },
-      { title: 'New ad', icon: 'note_add', url: '/new' },
-      { title: 'My ad', icon: 'list', url: '/list' }
-    ]
-  })
+  data () {
+    return {
+      drawer: false,
+      links: [
+        { title: 'Login', icon: 'lock', url: '/login' },
+        { title: 'Registration', icon: 'face', url: '/registration' },
+        { title: 'Orders', icon: 'bookmark_border', url: '/orders' },
+        { title: 'New ad', icon: 'note_add', url: '/new' },
+        { title: 'My ad', icon: 'list', url: '/list' }
+      ]
+    }
+  }
 }
 </script>
 
