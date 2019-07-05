@@ -9,14 +9,6 @@
           <v-card-text>
             <v-form v-model="valid" ref="form" validation>
               <v-text-field 
-                prepend-icon="face"
-                name="name" 
-                label="Name" 
-                type="text"
-                v-model="name"
-                :rules="[ v => !!v || 'Name is required' ]"
-              ></v-text-field>
-              <v-text-field 
                 prepend-icon="person"
                 name="email" 
                 label="Email" 
@@ -51,6 +43,7 @@
               color="indigo darken-3"
               @click="onSubmit"
               :disabled="!valid"
+              :loading="loading"
             >Create account</v-btn>
           </v-card-actions>
         </v-card>
@@ -63,7 +56,6 @@
 export default {
   data () {
     return {
-      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -82,17 +74,25 @@ export default {
       ]
     }
   },
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     onSubmit () {
       if (!this.$refs.form.validate()) {
         return
       }
       const formData = {
-        name: this.name,
         email: this.email,
         password: this.password
       }
-      console.log('submit', formData)
+      this.$store.dispatch('registerUser', formData)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(error => console.error(error))
     }
   }
 }

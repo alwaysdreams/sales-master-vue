@@ -38,6 +38,7 @@
               color="indigo darken-3"
               @click="onSubmit"
               :disabled="!valid"
+              :loading="loading"
             >Login</v-btn>
           </v-card-actions>
         </v-card>
@@ -61,6 +62,11 @@ export default {
       v => (v && v.length >= 6) || 'Password must be equal or more than 6 characters'
     ]
   }),
+  computed: {
+    loading () {
+      return this.$store.getters.loading
+    }
+  },
   methods: {
     onSubmit () {
       if (!this.$refs.form.validate()) {
@@ -70,7 +76,11 @@ export default {
         email: this.email,
         password: this.password
       }
-      console.log('submit', formData)
+      this.$store.dispatch('loginUser', formData)
+        .then(() => {
+          this.$router.push('/')
+        })
+        .catch(error => console.error(error))
     }
   }
 }
