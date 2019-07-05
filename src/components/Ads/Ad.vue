@@ -14,8 +14,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
 
-            <v-btn class="warning">Edit</v-btn>
-            <v-btn class="success">Buy</v-btn>
+            <v-btn flat class="info">Edit</v-btn>
+            <v-btn color="indigo darken-3" dark>Buy</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -26,9 +26,7 @@
 <script>
 export default {
   data () {
-    return {
-      
-    } 
+    return {} 
   }
 }
 </script>
