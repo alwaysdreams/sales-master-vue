@@ -20,7 +20,7 @@ new Vue({
       authDomain: "sale-mast3r.firebaseapp.com",
       databaseURL: "https://sale-mast3r.firebaseio.com",
       projectId: "sale-mast3r",
-      storageBucket: "",
+      storageBucket: "sale-mast3r.appspot.com",
       messagingSenderId: "477549987047",
       appId: "1:477549987047:web:829a8ab239cbc0c1"
     })

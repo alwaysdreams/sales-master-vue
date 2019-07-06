@@ -27,13 +27,25 @@ export default {
     async createAd ({commit, getters}, payload) {
       commit('clearError')
       commit('setLoading', true)
-      const {title, description, promo, imageSrc} = payload
+      const {title, description, promo, image} = payload
       try {
-        const ad = new Ad(title, description, getters.user.id, imageSrc, promo)
+        const ad = new Ad(title, description, getters.user.id, '', promo)
         const dbResponse = await firebase.database().ref('ads').push(ad)
+
+        const imageFormat = image.name.slice(image.name.lastIndexOf('.'))
+
+        const fileResponse = await firebase.storage().ref(`ads/${dbResponse.key}.${imageFormat}`).put(image)
+        const imageSrc = await fileResponse.ref.getDownloadURL()
+          .then(downloadURL => (downloadURL))
+
+        await firebase.database().ref('ads').child(dbResponse.key).update({
+          imageSrc
+        }) 
+        
         commit('createAd', {
           ...ad, 
-          id: dbResponse.key
+          id: dbResponse.key,
+          imageSrc
         })
         commit('setLoading', false)
       } catch (error) {
