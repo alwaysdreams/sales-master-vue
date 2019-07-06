@@ -28,10 +28,12 @@ export default {
       commit('clearError')
       commit('setLoading', true)
       const {title, description, promo, imageSrc} = payload
-      
+      console.warn(`START CREATING NEW AD >>>>>`, payload)
       try {
         const ad = new Ad(title, description, getters.user.id, imageSrc, promo)
+        console.warn(`NEW AD >>>>> ${ad}`)
         const dbResponse = await firebase.database().ref('ads').push(ad)
+        console.warn(`DB RESULT CREATING NEW AD >>>>>`, dbResponse)
         commit('createAd', {
           ...ad, 
           id: dbResponse.key

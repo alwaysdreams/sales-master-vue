@@ -15,6 +15,8 @@ new Vue({
   store,
   render: h => h(App),
   created () {
+    console.warn('START INITIALIZE DB <<<<<<< ')
+    
     firebase.initializeApp({
       apiKey: "AIzaSyAxqLzaFbu6iXVj-D5ByVfwH-bB3RAULGY",
       authDomain: "sale-mast3r.firebaseapp.com",
@@ -25,11 +27,15 @@ new Vue({
       appId: "1:477549987047:web:829a8ab239cbc0c1"
     })
 
+    console.warn('CHECK LOGIN USER FOR AUTO LOGIN <<<<<<< ')
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.dispatch('autoLoginUser', user)
       }
     })
+
+    console.warn('START FETCH ADS <<<<<<< ')
 
     this.$store.dispatch('fetchAds')
   }
