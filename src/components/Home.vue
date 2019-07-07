@@ -46,7 +46,7 @@
     </v-container>
   </div>
   <div v-else>
-    <v-continer>
+    <v-container>
       <v-layout row>
         <v-flex xs12 class="text-xs-center pt-4">
           <v-progress-circular
@@ -57,7 +57,7 @@
           ></v-progress-circular>
         </v-flex>
       </v-layout>
-    </v-continer>
+    </v-container>
   </div>
 </template>
 

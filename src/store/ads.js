@@ -19,32 +19,57 @@ export default {
     createAd (state, payload) {
       state.ads.push(payload)
     },
-    loadAds (state, payload) {
+    fetchAds (state, payload) {
       state.ads = payload
+    },
+    updateAd (state, payload) {
+      const ad = this.getters.adById(payload.id)
+      if (ad) {
+        ad.title = payload.title
+        ad.description = payload.description
+      }
     }
   },
   actions: {
+    updateAd ({commit}, {title, description, id}) {
+      commit('clearError')
+      commit('setLoading', true)
+
+      try {
+        firebase.database().ref('ads').child(id).update({
+            title, description
+          })
+          .then(() => {
+            commit('updateAd', {title, description, id})
+            commit('setLoading', false)
+          })
+      } catch (error) {
+        commit('setLoading', false)
+        commit('setError', error.message)
+        throw error
+      }
+    },
     async createAd ({commit, getters}, payload) {
       commit('clearError')
       commit('setLoading', true)
       const {title, description, promo, image} = payload
       try {
         const ad = new Ad(title, description, getters.user.id, '', promo)
-        const dbResponse = await firebase.database().ref('ads').push(ad)
+        const createResponse = await firebase.database().ref('ads').push(ad)
 
         const imageFormat = image.name.slice(image.name.lastIndexOf('.'))
 
-        const fileResponse = await firebase.storage().ref(`ads/${dbResponse.key}.${imageFormat}`).put(image)
-        const imageSrc = await fileResponse.ref.getDownloadURL()
+        const imageResponse = await firebase.storage().ref(`ads/${createResponse.key}.${imageFormat}`).put(image)
+        const imageSrc = await imageResponse.ref.getDownloadURL()
           .then(downloadURL => (downloadURL))
 
-        await firebase.database().ref('ads').child(dbResponse.key).update({
+        await firebase.database().ref('ads').child(createResponse.key).update({
           imageSrc
         }) 
         
         commit('createAd', {
           ...ad, 
-          id: dbResponse.key,
+          id: createResponse.key,
           imageSrc
         })
         commit('setLoading', false)
@@ -69,7 +94,7 @@ export default {
           ads.push(new Ad(title, description, ownerId, imageSrc, promo, key))
         })
 
-        commit('loadAds', ads)
+        commit('fetchAds', ads)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
@@ -85,8 +110,10 @@ export default {
     promoAds (state) {
       return state.ads.filter(ad => ad.promo)
     },
-    myAds (state) {
-      return state.ads
+    myAds (state, getters) {
+      return state.ads.filter(ad => {
+        return ad.ownerId === getters.user.id
+      })
     },
     adById (state) {
       return (adId) => {

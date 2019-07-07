@@ -41,7 +41,7 @@
           </v-flex>
         </v-layout>
 
-        <v-layout row>
+        <v-layout row class="mt-2">
           <v-flex xs12>
             <img v-if="imageSrc" :src="imageSrc" height="150">
           </v-flex>
@@ -97,7 +97,7 @@ export default {
       const file = event.target.files[0]
       const reader = new FileReader()
 
-      reader.onload = e => {
+      reader.onload = () => {
         this.imageSrc = reader.result
       }
       reader.readAsDataURL(file)
@@ -116,7 +116,6 @@ export default {
         promo: this.promo,
         image: this.image
       }
-      console.log('creating new ad >>>>>> ', adData)
       
       this.$store.dispatch('createAd', adData)
         .then(() => {
