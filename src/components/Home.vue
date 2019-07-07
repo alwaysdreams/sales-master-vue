@@ -38,7 +38,7 @@
             <v-card-actions>
               <v-btn raised :to="'/ad/' + ad.id" color="cyan" dark>OPEN</v-btn>
               <v-spacer></v-spacer>
-              <v-btn raised dark color="indigo">BUY IT</v-btn>
+              <app-buy-modal :ad="ad"></app-buy-modal>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -62,19 +62,19 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      promoAds () {
-        return this.$store.getters.promoAds
-      },
-      ads () {
-        return this.$store.getters.ads
-      }, 
-      loading () {
-        return this.$store.getters.loading
-      }
+export default {
+  computed: {
+    promoAds () {
+      return this.$store.getters.promoAds
+    },
+    ads () {
+      return this.$store.getters.ads
+    }, 
+    loading () {
+      return this.$store.getters.loading
     }
   }
+}
 </script>
 
 <style scoped>

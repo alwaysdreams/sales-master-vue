@@ -13,8 +13,8 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <editAdModal class="mr-2" :ad="ad" v-show="isOwner"></editAdModal>
-            <v-btn color="indigo darken-3" dark>Buy</v-btn>
+            <EditAdModal class="mr-2" :ad="ad" v-show="isOwner"></EditAdModal>
+            <app-buy-modal :ad="ad"></app-buy-modal>
           </v-card-actions>
         </v-card>
         <div v-else class="text-xs-center">
@@ -47,7 +47,7 @@ export default {
     }
   },
   components: {
-    editAdModal: EditAdModal
+    EditAdModal
   }
 }
 </script>
