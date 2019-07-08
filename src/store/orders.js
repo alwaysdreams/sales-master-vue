@@ -1,11 +1,12 @@
 import firebase from 'firebase'
 
 class Order {
-  constructor (name, phone, adId, ownerId) {
+  constructor (name, phone, adId, done = false, id = null) {
     this.name = name
-    this.phone = phone
+    this.phone = phone 
     this.adId = adId
-    this.ownerId = ownerId
+    this.done = done
+    this.id = id
   }
 }
 
@@ -14,46 +15,52 @@ export default {
     orders: []
   },
   mutations: {
-    createOrder (state, payload) {
-      state.orders.push(payload)
-    },
     fetchOrders (state, payload) {
       state.orders = payload
     }
   },
   actions: {
-    async createOrder ({commit}, payload) {
+    async markOrderDone ({commit, getters}, payload) {
       commit('clearError')
-      commit('setLoading', true)
-      const { name, phone, adId, ownerId } = payload
       try {
-        const order = new Order(name, phone, adId, ownerId)
-        await firebase.database().ref('orders').push(order)
-
-        commit('createOrder', order)
-        commit('setLoading', false)
+        await firebase.database().ref(`/users/${getters.user.id}/orders`).child(payload).update({
+          done: true
+        })
       } catch (error) {
-        commit('setLoading', false)
         commit('setError', error.message)
         throw error
       }
     },
-    async fetchOrders ({commit}) {
+    async createOrder ({commit}, { name, phone, adId, ownerId }) {
+      commit('clearError')
+      const order = new Order(name, phone, adId)
+      
+      try {
+        await firebase.database().ref(`/users/${ownerId}/orders`).push(order)
+      } catch (error) {
+        commit('setError', error.message)
+        throw error
+      }
+    },
+    async fetchOrders ({commit, getters}) {
       commit('clearError')
       commit('setLoading', true)
 
       try {
-        const dbResponse = await firebase.database().ref('orders').once('value')
+        const dbResponse = await firebase.database().ref(`/users/${getters.user.id}/orders`).once('value')
         const dbCollection = dbResponse.val()
         let orders = []
 
-        Object.keys(dbCollection).forEach(key => {
-          const item = dbCollection[key]
-          const {name, phone, adId, ownerId} = item
-          orders.push(new Order(name, phone, adId, ownerId))
-        })
+        if (dbCollection) {
+          Object.keys(dbCollection).forEach(key => {
+            const item = dbCollection[key]
+            const {name, phone, adId, done} = item
+            orders.push(new Order(name, phone, adId, done, key))
+          })
+  
+          commit('fetchOrders', orders)
+        }
 
-        commit('fetchOrders', orders)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
@@ -63,8 +70,14 @@ export default {
     }
   },
   getters: {
-    myOrders (state) {
-      return state.orders
+    doneOrders (state) {
+      return state.orders.filter(o => o.done)
+    },
+    undoneOrders (state) {
+      return state.orders.filter(o => !o.done)
+    },
+    orders (state, getters) {
+      return [...getters.undoneOrders, ...getters.doneOrders]
     }
   }
 }

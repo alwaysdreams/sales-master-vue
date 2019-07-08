@@ -1,12 +1,20 @@
 <template>
   <v-container>
-    <v-layout row v-if="!loading">
-      <v-flex xs12 sm6 offset-sm3>
+    <v-layout row>
+      <v-flex xs12 class="text-xs-center" v-if="loading">
+        <v-progress-circular
+          :size="100"
+          :width="5"
+          color="indigo"
+          indeterminate
+        ></v-progress-circular>
+      </v-flex>
+      <v-flex xs12 sm6 offset-sm3 v-if="!loading && orders.length !== 0">
         <h1 class="text--secondary mb-3">Orders</h1>
         <v-list two-line subheader>
           <v-list-tile
             avatar
-            v-for="order in myOrders"
+            v-for="order in orders"
             :key="order.id"
           >
             <v-list-tile-action>
@@ -27,15 +35,8 @@
           </v-list-tile>
         </v-list>
       </v-flex>
-    </v-layout>
-    <v-layout row v-else>
-      <v-flex xs12 class="text-xs-center">
-        <v-progress-circular
-          :size="100"
-          :width="5"
-          color="indigo"
-          indeterminate
-        ></v-progress-circular>
+      <v-flex xs12 class="text-xs-center" v-else>
+        <h1 class="text--secondary mb-3">You have no orders</h1>
       </v-flex>
     </v-layout>
   </v-container>
@@ -43,9 +44,12 @@
 
 <script>
 export default {
+  created () {
+    this.$store.dispatch('fetchOrders')
+  },
   computed: {
-    myOrders () {
-      return this.$store.getters.myOrders
+    orders () {
+      return this.$store.getters.orders
     },
     loading () {
       return this.$store.getters.loading
@@ -53,7 +57,11 @@ export default {
   },
   methods: {
     markDone (order) {
-      order.done = true
+      this.$store.dispatch('markOrderDone', order.id)
+        .then(() => {
+          order.done = true
+        })
+        .catch(() => {})
     }
   }
 }

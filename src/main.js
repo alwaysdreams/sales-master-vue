@@ -32,6 +32,5 @@ new Vue({
       }
     })
     this.$store.dispatch('fetchAds')
-    this.$store.dispatch('fetchOrders')
   }
 }).$mount('#app')
