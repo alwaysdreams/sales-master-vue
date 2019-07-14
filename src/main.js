@@ -6,6 +6,7 @@ import store from './store'
 import Vuetify from 'vuetify'
 import BuyModalComponents from '@/components/Common/BuyModal'
 import 'vuetify/src/stylus/app.styl'
+import firebaseConfig from '../firebase.config'
 
 Vue.use(Vuetify)
 Vue.component('app-buy-modal', BuyModalComponents)
@@ -17,14 +18,16 @@ new Vue({
   store,
   render: h => h(App),
   created () {
+    console.log('firebaseConfig >>>', firebaseConfig)
+    
     firebase.initializeApp({
-      apiKey: "AIzaSyAxqLzaFbu6iXVj-D5ByVfwH-bB3RAULGY",
-      authDomain: "sale-mast3r.firebaseapp.com",
-      databaseURL: "https://sale-mast3r.firebaseio.com",
-      projectId: "sale-mast3r",
-      storageBucket: "sale-mast3r.appspot.com",
-      messagingSenderId: "477549987047",
-      appId: "1:477549987047:web:829a8ab239cbc0c1"
+      apiKey: firebaseConfig.apiKey, 
+      authDomain: firebaseConfig.authDomain, 
+      databaseURL: firebaseConfig.databaseURL, 
+      projectId: firebaseConfig.projectId, 
+      storageBucket: firebaseConfig.storageBucket, 
+      messagingSenderId: firebaseConfig.messagingSenderId, 
+      appId: firebaseConfig.appId
     })
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
