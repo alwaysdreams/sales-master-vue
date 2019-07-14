@@ -18,6 +18,9 @@ new Vue({
   store,
   render: h => h(App),
   created () {
+    if (!firebaseConfig) {
+      return
+    }
     firebase.initializeApp({
       apiKey: firebaseConfig.apiKey, 
       authDomain: firebaseConfig.authDomain, 
