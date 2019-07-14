@@ -18,8 +18,6 @@ new Vue({
   store,
   render: h => h(App),
   created () {
-    console.log('firebaseConfig >>>', firebaseConfig)
-    
     firebase.initializeApp({
       apiKey: firebaseConfig.apiKey, 
       authDomain: firebaseConfig.authDomain, 
